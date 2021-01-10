@@ -1,0 +1,93 @@
+@startuml stack
+
+skinparam file BorderColor #cc0033
+skinparam BackgroundColor white
+
+skinparam sequence {
+  LifeLineBorderColor Green
+  ArrowColor black
+  ParticipantBorderColor black
+  ParticipantBackgroundColor GreenYellow
+  ParticipantFontColor black
+}
+skinparam actor {
+  backgroundColor #cc0033
+  borderColor #cc0033
+}
+skinparam activity {
+  StartColor green
+  BarColor black
+  EndColor red
+  BackgroundColor white
+  DiamondBackgroundColor white
+  DiamondBorderColor magenta
+  BorderColor black
+  ArrowColor black
+}
+skinparam cloud {
+  borderColor lightgray
+  backgroundColor white
+}
+skinparam interface {
+  borderColor black
+  backgroundColor #cc0033
+}
+skinparam component {
+  borderColor #cc0033
+  backgroundColor white
+}
+skinparam file {
+  borderColor #cc0033
+  backgroundColor white
+}
+skinparam queue {
+  borderColor #cc0033
+  backgroundColor white
+}
+skinparam artifact {
+  borderColor #cc0033
+  backgroundColor white
+}
+skinparam database {
+  borderColor #cc0033
+  backgroundColor white
+}
+skinparam agent {
+  borderColor #cc0033
+  backgroundColor white
+}
+
+skinparam defaulttextalignment center
+
+frame "Local Network" as lan {
+  node "Raspberry Pi" as host {
+    component Docker as docker1 {
+      artifact "influxdb" as influxdb
+      artifact "telegraf" as telegraf
+      artifact "grafana" as grafana
+      artifact "traefik" as traefik
+    }
+  }
+
+  node "probe#1" as p1 {
+    component "microcontroller" as uc
+    component "Temp+Humid sensor" as sensor
+    uc -- sensor
+  }
+}
+
+frame "Internet" as www {
+  interface "https://mygrafana.domain.com" as grafana_www
+  interface "http://myinfluxdb.domain.com" as influx_www
+}
+
+actor User
+User --(0 grafana_www
+telegraf --(0 influxdb
+traefik -- grafana_www
+traefik -- influx_www
+traefik -(0 grafana
+traefik -(0 influxdb
+
+uc -- influx_www
+@enduml

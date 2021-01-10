@@ -1,0 +1,5 @@
+CREATE USER telegraf WITH PASSWORD 'secret'
+CREATE DATABASE telegraf WITH DURATION 31d
+GRANT WRITE ON telegraf to telegraf
+GRANT READ on telegraf to grafana
+CREATE RETENTION POLICY forever ON telegraf DURATION INF REPLICATION 1
