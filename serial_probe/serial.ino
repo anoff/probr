@@ -20,16 +20,23 @@ void loop() {
     serial_in = Serial.readString();
     command = serial_in.substring(0, 3);
     int attribute_ix = serial_in.indexOf(' ', 4);
-    Serial.print(attribute_ix);
-    Serial.print(", ");
-    Serial.println(serial_in.length());
     if (attribute_ix == -1) { // no value following attribute
       attribute = serial_in.substring(4, serial_in.length()-2);
     } else {
       attribute = serial_in.substring(4, attribute_ix);
       value = serial_in.substring(attribute_ix + 1, serial_in.length()-2);
     }
-    if (attribute.length() < 1 || (attribute == "set" && value.length() < 1)) {
+    Serial.print("DEBUG: Parsed message: ");
+    Serial.print(command);
+    Serial.print(" ");
+    Serial.print(attribute);
+    Serial.print("=");
+    Serial.println(value);
+    if (command == "help") {
+      printHelp();
+      return;
+    }
+    if (attribute.length() < 1 || (command == "set" && value.length() < 1)) {
       Serial.println("ERROR: attribute/value not defined.");
       Serial.print("DEBUG: Received serial message: ");
       Serial.println(serial_in);
@@ -45,24 +52,70 @@ void loop() {
         return;
       }
       if (command == "get") {
-        uint8_t v = EEPROM.read(0);
         Serial.print("read from PROM: ");
-        Serial.println(v);
+        if (attribute == "id" || attribute == "height" || attribute == "floor") {
+          uint8_t v = EEPROM.read(EEPROM_addr);
+          if (attribute == "height") {
+            float height = v;
+            height /= 10;
+            Serial.println(height);
+          } else {
+            Serial.println(v);
+          }
+        } else if (attribute == "room") {
+          char room[16];
+          char t;
+          uint8_t i = 0;
+          while (i < 17) {
+            t = EEPROM.read(EEPROM_addr + i);
+            room[i] = t;
+            if (t == '\0') {
+              break;
+            }
+            i++;
+          }
+          Serial.println(room);
+        } else {
+          Serial.print("ERROR: Unknown attribute: ");
+          Serial.println(attribute);
+          return;
+        }
       } else if (command == "set") {
-        uint8_t v = value.toInt();
         Serial.print("setting value: ");
-        Serial.println(v);
-        EEPROM.update(0, v);
+        if (attribute == "id" || attribute == "height" || attribute == "floor") {
+          uint8_t v = value.toInt();
+          if (attribute == "height") {
+            float height = value.toFloat();
+            height *= 10;
+            v = (uint8_t)height;
+          }
+          Serial.println(v);
+          EEPROM.update(EEPROM_addr, v);
+        } else if (attribute == "room") {
+          char room[16];
+          char t;
+          value.toCharArray(room, 16);
+          uint8_t i = 0;
+          while (i < 17) {
+            t = room[i];
+            EEPROM.update(EEPROM_addr + i, t);
+            if (t == '\0') {
+              break;
+            }
+            i++;
+          }
+          Serial.println(room);
+        } else {
+          Serial.print("ERROR: Unknown attribute: ");
+          Serial.println(attribute);
+          return;
+        }
       }
     } else {
       Serial.print("ERROR: Unexpected command: ");
       Serial.println(command);
       return;
     }
-    Serial.print("attribute=value: ");
-    Serial.print(attribute);
-    Serial.print("=");
-    Serial.println(value);
   }  
 }
 
