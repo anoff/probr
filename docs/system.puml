@@ -62,17 +62,22 @@ skinparam defaulttextalignment center
 frame "Local Network" as lan {
   node "Raspberry Pi" as host {
     component Docker as docker1 {
-      artifact "influxdb" as influxdb
+      artifact "influxdb\n<i>:8086" as influxdb
       artifact "telegraf" as telegraf
-      artifact "grafana" as grafana
+      artifact "grafana\n<i>:3000" as grafana
       artifact "traefik" as traefik
+      artifact "mosquitto\n<i>:1883" as mosquitto
     }
   }
 
   node "probe#1" as p1 {
     component "microcontroller" as uc
-    component "Temp+Humid sensor" as sensor
-    uc -- sensor
+    component "Temp+Humid sensor" as dht
+    component "Gas sensor" as s_voc
+    component "Light sensor" as s_l
+    uc -left- dht
+    uc -up- s_voc
+    uc -up- s_l
   }
 }
 
@@ -82,12 +87,13 @@ frame "Internet" as www {
 }
 
 actor User
-User --(0 grafana_www
+User --( grafana_www
 telegraf --(0 influxdb
 traefik -- grafana_www
 traefik -- influx_www
 traefik -(0 grafana
 traefik -(0 influxdb
+telegraf -(0 mosquitto
 
-uc -- influx_www
+uc --(0 mosquitto
 @enduml

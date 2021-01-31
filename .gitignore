@@ -1,2 +1,4 @@
 secrets.h
 .vscode
+*.bin
+password_file.txt

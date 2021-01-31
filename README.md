@@ -10,7 +10,8 @@ The system consists of the following components:
   * Raspberry Pi: hosting database and dashboard services
 * Services
   * [InfluxDB](https://www.influxdata.com/products/influxdb/): timeseries database to keep data from sensors and weather report
-  * [Telegraf](https://www.influxdata.com/time-series-platform/telegraf/): Ingest plugin for InfluxDB to collect weather data
+  * [Telegraf](https://www.influxdata.com/time-series-platform/telegraf/): Ingest plugin for InfluxDB to collect weather data and MQTT messages
+  * [Mosquitto](https://mosquitto.org/): mqtt broker between microcontroller(sender) and telegraf(consumer)
   * [Grafana](https://grafana.com/): Dashboard for visualizing data
   * [traefik](https://traefik.io/): Get SSL certificates for grafana domain and route traffic for individual subdomains to correct docker services
 
