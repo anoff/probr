@@ -1,0 +1,12 @@
+substitutions:
+  devicename: bedroom_ac
+  label: Bedroom (AC)
+  mount_room: bedroom
+  mount_floor: "1"
+  mount_height: "2.0" # in m
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+
+<<: !include .template_ac.yml

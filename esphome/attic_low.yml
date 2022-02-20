@@ -1,0 +1,31 @@
+substitutions:
+  devicename: attic_low
+  label: Attic Low
+  mount_room: attic
+  mount_floor: "3"
+  mount_height: "0.1" # in m
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+
+<<: !include .template_base.yml
+
+sensor:
+  - platform: dht
+    pin: D3
+    temperature:
+      state_topic: probrv2/${devicename}/${mount_floor}:${mount_room}:${mount_height}/dht/temperature
+      name: "Temperature ${label}"
+      filters:
+        - sliding_window_moving_average:
+            window_size: 3
+            send_every: 3
+    humidity:
+      state_topic: probrv2/${devicename}/${mount_floor}:${mount_room}:${mount_height}/dht/humidity
+      name: "Humidity ${label}"
+      filters:
+        - sliding_window_moving_average:
+            window_size: 3
+            send_every: 3
+    update_interval: 20s

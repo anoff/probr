@@ -1,0 +1,37 @@
+esphome:
+  name: bathroom
+  platform: ESP8266
+  board: d1_mini
+
+# Enable logging
+logger:
+  hardware_uart: UART1
+
+api:
+  password: "beta.otto.nay.comedian"
+
+ota:
+  password: "beta.otto.nay.comedian"
+
+wifi:
+  ssid: "arawa"
+  password: "lauterschmutzigegeraete"
+
+i2c:
+  sda: D2
+  scl: D1
+  scan: True
+  id: bus_a
+
+
+sensor:
+  - platform: bme280
+    temperature:
+      name: "Temperature (BME280)"
+      oversampling: 16x
+    pressure:
+      name: "Pressure (BME280)"
+    humidity:
+      name: "Humidity (BME280)"
+    address: 0x77
+    update_interval: 60s

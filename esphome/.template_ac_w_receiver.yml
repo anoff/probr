@@ -1,0 +1,48 @@
+<<: !include .template_base.yml
+
+i2c:
+  sda: D2
+  scl: D1
+  scan: True
+  id: bus_a
+
+climate:
+  - platform: daikin
+    name: "AC ${label}"
+    sensor: aht10_t
+    receiver_id: ir_receiver
+    state_topic: probrv2/${devicename}/${mount_floor}:${mount_room}:${mount_height}/climate/state
+
+sensor:
+  - platform: aht10
+    temperature:
+      name: "Temperature (AHT10) ${label}"
+      state_topic: probrv2/${devicename}/${mount_floor}:${mount_room}:${mount_height}/aht10/temperature
+      id: aht10_t
+      accuracy_decimals: 1
+      filters:
+        - sliding_window_moving_average:
+            window_size: 3
+            send_every: 3
+    humidity:
+      name: "Humidity (AHT10) ${label}"
+      state_topic: probrv2/${devicename}/${mount_floor}:${mount_room}:${mount_height}/aht10/humidity
+      accuracy_decimals: 1
+      filters:
+        - sliding_window_moving_average:
+            window_size: 3
+            send_every: 3
+    update_interval: 20s
+
+remote_transmitter:
+  pin: D5
+  carrier_duty_percent: 50%
+
+remote_receiver:
+  id: ir_receiver
+  pin:
+    number: D6
+    inverted: True
+    mode: INPUT_PULLUP
+  # high 55% tolerance is recommended for some remote control units
+  tolerance: 55%

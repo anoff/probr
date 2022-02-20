@@ -1,0 +1,12 @@
+substitutions:
+  devicename: living_window_ac
+  label: Living Window (AC)
+  mount_room: living
+  mount_floor: "2"
+  mount_height: "2.0" # in m
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+  
+<<: !include .template_ac_w_receiver.yml

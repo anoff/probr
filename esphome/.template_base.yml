@@ -1,0 +1,19 @@
+esphome:
+  name: $devicename
+  platform: ESP8266
+  board: d1_mini
+
+logger:
+
+ota:
+  password: !secret ota_password
+
+mqtt:
+  broker: !secret mqtt_host
+  username: !secret mqtt_user
+  password: !secret mqtt_password
+  topic_prefix: probrv2/${devicename}/${mount_floor}:${mount_room}:${mount_height} # used for state/debug
+
+switch:
+  - platform: restart
+    name: "Restart $label"

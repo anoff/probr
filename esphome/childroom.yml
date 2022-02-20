@@ -1,0 +1,56 @@
+esphome:
+  name: childroom
+  platform: ESP8266
+  board: d1_mini
+
+# Enable logging
+logger:
+  hardware_uart: UART1
+
+# Enable Home Assistant API
+api:
+  password: "beta.otto.nay.comedian"
+
+ota:
+  password: "beta.otto.nay.comedian"
+
+wifi:
+  ssid: "arawa"
+  password: "lauterschmutzigegeraete"
+
+remote_transmitter:
+  pin: D0
+  carrier_duty_percent: 50%
+
+uart:
+  rx_pin: GPIO3
+  tx_pin: GPIO1
+  baud_rate: 9600
+
+i2c:
+  sda: D2
+  scl: D1
+  scan: True
+  id: bus_a
+
+climate:
+  - platform: daikin
+    name: "AC"
+    sensor: aht10_t
+
+
+sensor:
+  - platform: aht10
+    temperature:
+      name: "Temperature (AHT10)"
+      id: aht10_t
+    humidity:
+      name: "Humidity (AHT10)"
+    update_interval: 60s
+  - platform: mhz19
+    co2:
+      name: "CO2 Value"
+    temperature:
+      name: "Temperature (MH-Z19)"
+    update_interval: 60s
+    automatic_baseline_calibration: false

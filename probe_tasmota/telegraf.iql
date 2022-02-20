@@ -1,0 +1,45 @@
+CREATE DATABASE climate WITH DURATION 20w NAME highres;
+ALTER RETENTION POLICY highres ON climate DURATION 20w DEFAULT;
+CREATE RETENTION POLICY forever ON climate DURATION INF REPLICATION 1;
+GRANT READ ON climate TO grafana;
+
+CREATE CONTINUOUS QUERY "tasmota_10s" ON "telegraf" RESAMPLE EVERY 10s BEGIN SELECT last(*) INTO climate.highres.probr FROM telegraf.autogen.mqtt_probr_metrics WHERE tasmota_type='SENSOR' GROUP BY time(20s), * END;
+
+CREATE CONTINUOUS QUERY "tasmota_5m" ON "telegraf" BEGIN SELECT mean(*) INTO climate.forever.probr_5m FROM telegraf.autogen.mqtt_probr_metrics WHERE tasmota_type='SENSOR' GROUP BY time(5m), * END;
+
+CREATE CONTINUOUS QUERY "tasmota_60m" ON "telegraf" BEGIN SELECT mean(*), max(*), min(*), stddev(*) INTO climate.forever.probr_1h FROM telegraf.autogen.mqtt_probr_metrics WHERE tasmota_type='SENSOR' GROUP BY time(60m), * END;
+
+CREATE CONTINUOUS QUERY "foreca_5m" ON "telegraf" BEGIN SELECT last(*) INTO climate.forever.foreca FROM telegraf.autogen.foreca GROUP BY time(5m), * END;
+
+CREATE CONTINUOUS QUERY "owm_5m" ON "telegraf" BEGIN SELECT last(*) INTO climate.forever.owm FROM telegraf.autogen.weather GROUP BY time(5m), * END;
+
+CREATE CONTINUOUS QUERY "owm_60m" ON "telegraf" BEGIN SELECT mean(*) INTO climate.forever.owm_1h FROM telegraf.autogen.weather GROUP BY time(60m), * END;
+
+ON "db_name"
+RESAMPLE EVERY 10s FOR 2m
+BEGIN
+  SELECT mean("value")
+  INTO "cpu_mean"
+  FROM "cpu"
+  GROUP BY time(1m)
+END;
+
+SELECT * FROM mqtt_probr_metrics WHERE tasmota_type='SENSOR'
+
+CREATE CONTINUOUS QUERY copy_tasmota_1min ON telegraf
+BEGIN
+  <cq_query>
+END
+
+CREATE CONTINUOUS QUERY copy_tasmota_1h ON telegraf
+BEGIN
+  <cq_query>
+END
+
+time ads_blocked_today ads_percentage_today clients_ever_seen dns_queries_all_types dns_queries_today domains_being_blocked gravity_last_updated host   privacy_level queries_cached queries_forwarded reply_CNAME reply_IP reply_NODATA reply_NXDOMAIN status  unique_clients unique_domains
+
+CREATE RETENTION POLICY forever ON pihole DURATION INF REPLICATION 1;
+
+CREATE CONTINUOUS QUERY "pihole_3h" ON "pihole" BEGIN SELECT last(*) INTO pihole.forever.pihole_3h FROM pihole.autogen.pihole GROUP BY time(3h), * END;
+
+SELECT last(*) FROM telegraf.autogen.mqtt_probr_metrics WHERE tasmota_type = 'SENSOR' AND time >= '2021-02-09T10:33:00Z' AND time < '2021-02-09T10:33:10Z' GROUP BY time(10s), *

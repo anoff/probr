@@ -1,0 +1,64 @@
+substitutions:
+  devicename: office_ac
+  label: Office (AC)
+  mount_room: office
+  mount_floor: "2"
+  mount_height: "2.0" # in m
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+  
+<<: !include .template_base.yml
+# DO NOT INCLUDE AC TEMPLATE
+# Using BME680
+i2c:
+  sda: D2
+  scl: D1
+  scan: True
+  id: bus_a
+
+bme680_bsec:
+  address: 0x77
+
+climate:
+  - platform: daikin
+    name: "AC ${label}"
+    sensor: bme680_t
+    state_topic: probrv2/${devicename}/${mount_floor}:${mount_room}:${mount_height}/climate/state
+
+sensor:
+  - platform: bme680_bsec
+    temperature:
+      id: bme680_t
+      name: "Temperature (BME680) ${label}"
+      state_topic: probrv2/${devicename}/${mount_floor}:${mount_room}:${mount_height}/bme680/temperature
+      filters:
+        - calibrate_linear: 
+            - 0.0 -> 0.0
+            - 20.0 -> 20.0
+    pressure:
+      name: "Pressure (BME680) ${label}"
+      state_topic: probrv2/${devicename}/${mount_floor}:${mount_room}:${mount_height}/bme680/pressure
+    humidity:
+      name: "Humidity (BME680) ${label}"
+      state_topic: probrv2/${devicename}/${mount_floor}:${mount_room}:${mount_height}/bme680/humidity
+    iaq:
+      name: "IAQ (BME680) ${label}"
+      state_topic: probrv2/${devicename}/${mount_floor}:${mount_room}:${mount_height}/bme680/iaq
+    co2_equivalent:
+      name: "CO2 Equivalent (BME680) ${label}"
+      state_topic: probrv2/${devicename}/${mount_floor}:${mount_room}:${mount_height}/bme680/co2e
+    breath_voc_equivalent:
+      name: "VOC Equivalent (BME680) ${label}"
+      state_topic: probrv2/${devicename}/${mount_floor}:${mount_room}:${mount_height}/bme680/voce
+
+text_sensor:
+  - platform: bme680_bsec
+    iaq_accuracy:
+      name: "IAQ Accuracy (BME680) ${label}"
+      state_topic: probrv2/${devicename}/${mount_floor}:${mount_room}:${mount_height}/bme680/iaq_accuracy
+
+remote_transmitter:
+  pin: D5
+  carrier_duty_percent: 50%

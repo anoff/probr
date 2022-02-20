@@ -9,17 +9,38 @@
 > List of available devices
 
 Microcontrollers
-- 10x WeMos D1
+
+* many WeMos D1 mini
+* 3x D1 mini pro
+* 1x ESP32CAM Devkit
 
 Sensors
-- 6x AM2302 (T+H, = DHT22 breakout)
-- 4x DHT22 (T+H)
-- 10x KY-018 (photo resistor)
-- 2x CCS811 (eCO2, VOC)
-- 2x BME280 (T+H, P)
-- 2x BME680 (T+H, P, VOC)
 
-> T(emperature), H(umidity), P(ressure), V(olative)O(rganic)C(ompound) (= bad gas), L(ight)
+* 2x MH-Z19C (CO2)
+* 7x AHT10 (T, H)
+* 6x KY-05 IR Transmitter (IR)
+* 6x BME680 (T, H, P, VOC)
+* 3xPIR Sensor (Motion)
+* 5xKY-018 (Light Sensor)
+* 2xRasPi Cam
+* 2xTouch Sensor
+* 2xBME280 (T, H, P)
+
+> T(emperature), H(umidity), P(ressure), V(olative)O(rganic)C(ompound) (= bad gas)
+
+## Combinations
+
+AC Controller
+
+* KY-05 IR Transmitter
+* AHT10
+
+CO2
+
+* MH-Z19C
+* BME680
+
+
 
 ## Rooms and mount locations
 
@@ -32,6 +53,16 @@ Sensors
 | Living | behind TV | 0.5m | T, H, L, VOC |
 | Kitchen | above vent | 2.0m | T, H, L |
 | Entrance | near stairs | 2.0m | T, H, L |
+
+| Office | AC | 2.0m | IR, T |
+| Bedroom | AC | 2.0m | IR, T |
+| Child Room | AC | 2.0m | IR, T |
+| Kitchen | AC | 2.0m | IR, T |
+| Living Room#1 | AC | 2.0m | IR, T |
+| Living Room#2 | AC | 2.0m | IR, T |
+| Guest Room | AC | 2.0m | IR, T |
+
+
 
 ## Board Configurations
 
