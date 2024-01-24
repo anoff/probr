@@ -34,15 +34,22 @@ sensor:
       name: "Temperature (BME680) ${label}"
       state_topic: probrv2/${devicename}/${mount_floor}:${mount_room}:${mount_height}/bme680/temperature
       filters:
-        - calibrate_linear: 
-            - 0.0 -> 0.0
-            - 20.0 -> 20.0
+        - calibrate_linear:
+            - 0.0 -> -2.3
+            - 10.0 -> 6.1
+            - 20.0 -> 14.5
+            - 30.0 -> 22.9
     pressure:
       name: "Pressure (BME680) ${label}"
       state_topic: probrv2/${devicename}/${mount_floor}:${mount_room}:${mount_height}/bme680/pressure
     humidity:
       name: "Humidity (BME680) ${label}"
       state_topic: probrv2/${devicename}/${mount_floor}:${mount_room}:${mount_height}/bme680/humidity
+      filters:
+        - calibrate_linear:
+            - 30.0 -> 25.9
+            - 40.0 -> 31.1
+            - 60.0 -> 41.6
     iaq:
       name: "IAQ (BME680) ${label}"
       state_topic: probrv2/${devicename}/${mount_floor}:${mount_room}:${mount_height}/bme680/iaq

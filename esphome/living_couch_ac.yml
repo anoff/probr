@@ -36,6 +36,11 @@ sensor:
         - sliding_window_moving_average:
             window_size: 3
             send_every: 3
+        - calibrate_linear:
+            - 0.0 -> 0.8
+            - 10.0 -> 8.2
+            - 20.0 -> 15.6
+            - 30.0 -> 23
     humidity:
       name: "Humidity (AHT10) ${label}"
       state_topic: probrv2/${devicename}/${mount_floor}:${mount_room}:${mount_height}/aht10/humidity

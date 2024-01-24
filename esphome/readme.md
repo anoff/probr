@@ -1,5 +1,9 @@
 ## esphome mqtt style
 
+## how to flash
+
+
+
 probr/2:study:0.3/tasmota_B00960-2400/tele/SENSOR {"Time":"2021-07-24T23:54:07+09:00","BME280":{"Temperature":28.2,"Humidity":47.0,"DewPoint":15.8,"Pressure":1007.6},"PressureUnit":"hPa","TempUnit":"C"}
 probr/2:study:0.3/tasmota_B00960-2400/tele/STATE {"Time":"2021-07-24T23:51:07+09:00","Uptime":"149T00:49:42","UptimeSec":12876582,"Heap":22,"SleepMode":"Dynamic","Sleep":50,"LoadAvg":19,"MqttCount":43,"Wifi":{"AP":1,"SSId":"arawa","BSSId":"18:56:44:5E:12:F0","Channel":11,"RSSI":98,"Signal":-51,"LinkCount":8,"Downtime":"0T00:03:34"}}
 
@@ -34,10 +38,47 @@ childroom/sensor/miko_humidity/state 67.30
 
 ## sensor calibration
 
-### 2021-12-08
+### 2022-11-20
 
 real -> sensor
 
+office
+21;19
+22;19
+
+schlafzimmer
+17.5;16
+
+living ac
+19;24
+15;19
+
+
+### 2021-12-08
+
+real -> sensor
+      filters:
+        - calibrate_linear:
+            - 16 -> 10.4
+            - 19 -> 13
+            - 20 -> 16
+            - 23 -> 17
+            - 27 -> 19
+            - 25 -> 20
+            - 29 -> 22
+
+    humidity:
+      name: "Humidity (BME680) ${label}"
+      state_topic: probrv2/${devicename}/${mount_floor}:${mount_room}:${mount_height}/bme680/humidity
+      filters:
+        - calibrate_linear: 
+            - 34.0 -> 44.0
+            - 34.4 -> 45.0
+            - 34.0 -> 48.0
+            - 35.4 -> 48.0
+            - 39.2 -> 48.0
+            - 38.2 -> 51.0
+            - 42.3 -> 60.0
 office
 10.4;16
 13;19
@@ -53,6 +94,7 @@ office
 48%;39.2%
 51%;38.2%
 60%;42.3%
+[DONE]
 
 living_ac
 11.5;14
@@ -99,7 +141,7 @@ bedroom
 47%;45%
 49%;46.4%
 58%;56.3%
-
+[DONE]
 
 miko
 10.9;15
@@ -113,3 +155,26 @@ guestroom
 15;18
 46%;39.8%
 55%;41.3%
+
+
+
+## summer calibration
+real;sensor
+
+w/ existing previous calibration
+
+office
+27.5;25
+53%;32%
+
+dining
+28.3;33
+55%;44%
+
+living window
+26;32
+60%;46%
+
+
+
+## measurements w/o existing calibration
