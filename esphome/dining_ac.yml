@@ -6,7 +6,7 @@ substitutions:
   mount_height: "2.0" # in m
 
 wifi:
-  ssid: !secret wifi_ssid_ext
+  ssid: !secret wifi_ssid
   password: !secret wifi_password
 
 <<: !include .template_ac_w_receiver.yml

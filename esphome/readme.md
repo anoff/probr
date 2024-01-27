@@ -2,7 +2,12 @@
 
 ## how to flash
 
+```sh
+conda activate home-assistant
+esphome run office_ac.yml
+```
 
+## stuff?
 
 probr/2:study:0.3/tasmota_B00960-2400/tele/SENSOR {"Time":"2021-07-24T23:54:07+09:00","BME280":{"Temperature":28.2,"Humidity":47.0,"DewPoint":15.8,"Pressure":1007.6},"PressureUnit":"hPa","TempUnit":"C"}
 probr/2:study:0.3/tasmota_B00960-2400/tele/STATE {"Time":"2021-07-24T23:51:07+09:00","Uptime":"149T00:49:42","UptimeSec":12876582,"Heap":22,"SleepMode":"Dynamic","Sleep":50,"LoadAvg":19,"MqttCount":43,"Wifi":{"AP":1,"SSId":"arawa","BSSId":"18:56:44:5E:12:F0","Channel":11,"RSSI":98,"Signal":-51,"LinkCount":8,"Downtime":"0T00:03:34"}}

@@ -5,6 +5,7 @@
 ## Architecture
 
 The system consists of the following components:
+
 * Components
   * Microcontroller: placed in each room, collects local measurement and sends it to database
   * Raspberry Pi: hosting database and dashboard services
@@ -34,9 +35,6 @@ My setup has overgone several system changes, in chronological order:
 - added Home Assistant Dashboard & Integrations
 - added devices with IR remote control capability for Airconditioning
 
-
-
-
 ## Setup
 
 ### Database, Dashboard & Co
@@ -52,3 +50,5 @@ MQTT is running via mosquitto, to see what's running over the broker:
 docker run --rm -it eclipse-mosquitto sh
 mosquitto_sub -h 192.168.1.210 -u USER -P PASSWORD -v -t 'probrv2/#'
 ```
+
+mosquitto_sub -h 192.168.68.210 -u writer -P exert.ominous.THIEVE.snapback -v -t 'probrv2/#'
